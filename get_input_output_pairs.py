@@ -3,8 +3,8 @@ import pyperclip
 
 time.sleep(3)
 
-f = open('inputpairs.txt','r')
-f2 = open('input_output_pairs_1000.txt','w+')
+f = open('inputpairs_2.txt','r')
+f2 = open('input_output_pairs_xor2_1000.txt','w+')
 # j = 0
 for line in f:
 	# j+=1
@@ -23,7 +23,7 @@ for line in f:
 	pyautogui.keyUp('v')
 	pyautogui.keyUp('ctrl')
 	pyautogui.press('enter')
-	time.sleep(0.1)
+	time.sleep(0.01)
 	pyautogui.click(589, 616)
 	pyautogui.doubleClick()
 	pyautogui.keyDown('ctrl')
@@ -43,7 +43,7 @@ for line in f:
 	pyautogui.keyUp('v')
 	pyautogui.keyUp('ctrl')
 	pyautogui.press('enter')
-	time.sleep(0.1)
+	time.sleep(0.01)
 	pyautogui.click(589, 616)
 	pyautogui.doubleClick()
 	pyautogui.keyDown('ctrl')
