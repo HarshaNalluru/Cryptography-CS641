@@ -194,7 +194,8 @@ def sboxoutput(bitlist,boxnum):
 	row =int(bitlist[0]+bitlist[5],2)
 	col=int(bitlist[1]+bitlist[2]+bitlist[3]+bitlist[4],2)
 	return "{0:04b}".format(S[boxnum][row*16+col])
-inputxor='0100000000001000000000000000000000000100000000000000000000000000'
+# inputxor='0100000000001000000000000000000000000100000000000000000000000000'
+inputxor = '0000000000100000000000000000100000000000000000000000010000000000'
 zerosboxes=[2,5,6,7,8]
 inverse_inpxor=listPermuatate(IPINV,inputxor)
 def inputPairs():

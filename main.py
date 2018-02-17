@@ -1,6 +1,6 @@
 from utils import *
 counter={}
-f = open("input_output_pairs.txt")
+f = open("input_output_pairs_1000.txt")
 j=0
 while True:
 	j+=1;
