@@ -3,13 +3,13 @@ import pyperclip
 
 time.sleep(3)
 
-f = open('inputpars_3.txt','r')
-f2 = open('input_output_pairs_xor3_1000.txt','w+')
-# j = 0
+f = open('inputpars_4.txt','r')
+f2 = open('input_output_pairs_xor4_1000.txt','w+')
+j = 0
 for line in f:
-	# j+=1
-	# if j==5:
-	# 	break
+	j+=1
+	if j==101:
+		break
 	ip1,ip2 = line.split(' ')
 	ip1 = ip1.strip()
 	ip2 = ip2.strip()
