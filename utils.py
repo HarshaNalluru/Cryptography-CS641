@@ -163,33 +163,33 @@ def bitsToStr(bitlist):
 	temp=''
 	for i in range(8):
 		temp = temp+ format(int(bitlist[i*8:(i+1)*8],2),'02x')
-	return temp.translate(trantab)	
+	return temp.translate(trantab).lstrip()	
 def strtobits(str):
 	bitlist=''
 	temp =str.translate(reversetranstab)
 	# print temp
 	for i in range((len(temp))/2):
 		bitlist=bitlist+"{0:08b}".format(16*intab.index(temp[2*i])+intab.index(temp[2*i+1]))
-	return bitlist
+	return bitlist.lstrip()
 def xorbitlists(x,y):
 	xor=''
 	for a,b in zip(x,y):
 		xor=xor+str(int(a)^int(b))
-	return xor
+	return xor.lstrip()
 
 def listPermuatate(permutationarray,bitlist):
 	permutedlist=''
 	for i in range(len(bitlist)):
 		permutedlist=permutedlist+bitlist[permutationarray[i]-1]
-	return permutedlist
+	return permutedlist.lstrip()
 def expansion(bitlist):
 	expandedlist=''
 	for i in range(48):
 		expandedlist=expandedlist+bitlist[E[i]-1]
-	return expandedlist
+	return expandedlist.lstrip()
 def splitList(bitlist):
 	half=len(bitlist)/2
-	return bitlist[:half],bitlist[half:]
+	return bitlist[:half].lstrip(),bitlist[half:].lstrip()
 def sboxoutput(bitlist,boxnum):
 	row =int(bitlist[0]+bitlist[5],2)
 	col=int(bitlist[1]+bitlist[2]+bitlist[3]+bitlist[4],2)
@@ -198,10 +198,10 @@ inputxor='0100000000001000000000000000000000000100000000000000000000000000'
 zerosboxes=[2,5,6,7,8]
 inverse_inpxor=listPermuatate(IPINV,inputxor)
 def inputPairs():
-	for i in range(100):
+	for i in range(1000):
 		ip1=get64bits()
 		ip2=xorbitlists(ip1,inverse_inpxor)
-		print bitsToStr(ip1),"	",bitsToStr(ip2)
+		print bitsToStr(ip1),bitsToStr(ip2)
 
 # print inverse_inpxor
 # print listPermuatate(IP,inverse_inpxor)
@@ -211,7 +211,7 @@ def inputPairs():
 # a= get64bits()
 # print a[:32]
 # print expansion(a[:32])
-# inputPairs()
+inputPairs()
 # if(xorbitlists(strtobits('qsssmfqirrnpinrr'),strtobits('qsssufpirrnpmnrr'))==inverse_inpxor):
 # 	print "asdfghjkl"
 
