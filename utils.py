@@ -87,18 +87,16 @@ def get64bits():
 def bitsToStr(bitlist):
 	temp=''
 	for i in range(8):
-		temp = temp.join(format(int(bitlist[i*8:(i+1)*8],2),'02x'))
+		temp = temp+ format(int(bitlist[i*8:(i+1)*8],2),'02x')
 	return temp.translate(trantab)	
 def strtobits(str):
 	bitlist=''
 	temp =str.translate(reversetranstab)
 	print temp
-	for ch in temp:
-		bitlist = bitlist+"{0:04b}".format(intab.find(ch))
-
+	for i in range((len(temp))/2):
+		bitlist=bitlist+"{0:08b}".format(16*intab.index(temp[2*i])+intab.index(temp[2*i+1]))
 	return bitlist
 
 a = bitsToStr(get64bits())
 print a
 print strtobits(a)
-# print st
