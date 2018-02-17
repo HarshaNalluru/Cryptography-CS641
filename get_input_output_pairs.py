@@ -3,8 +3,8 @@ import pyperclip
 
 time.sleep(3)
 
-f = open('inputpairs_2.txt','r')
-f2 = open('input_output_pairs_xor2_1000.txt','w+')
+f = open('inputpars_3.txt','r')
+f2 = open('input_output_pairs_xor3_1000.txt','w+')
 # j = 0
 for line in f:
 	# j+=1
