@@ -143,6 +143,9 @@ S[8] = [
 	2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11,
 	]
 
+Keymap=[24, 27, 21, 6, 11, 15,13, 10, 25, 16, 3, 20,5, 1, 22, 14, 8, 18,26, 17, 9, 2, 23, 12,51, 34, 41, 47, 29, 37,40, 50, 33, 55, 43, 30,54, 31, 49, 38, 44, 35,56, 52, 32, 46, 39, 42,]
+
+
 intab = "0123456789abcdef"
 outtab="fghijklmnopqrstu"
 
@@ -195,8 +198,15 @@ def sboxoutput(bitlist,boxnum):
 	col=int(bitlist[1]+bitlist[2]+bitlist[3]+bitlist[4],2)
 	return "{0:04b}".format(S[boxnum][row*16+col])
 # inputxor='0100000000001000000000000000000000000100000000000000000000000000'
-inputxor = '0000000000100000000000000000100000000000000000000000010000000000'
-zerosboxes=[2,5,6,7,8]
+# inputxor = '0000000000100000000000000000100000000000000000000000010000000000'
+# inputxor='0100000001011100000000000000000000000100000000000000000000000000'
+inputxor='0000000010000000100000100000000001100000000000000000000000000000'
+# xor = [ 0x40, 0x5C, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00 ]
+# zerosboxes=[2,5,6,7,8]
+# zerosboxes=[1,2,4,5,6]
+# zerosboxes=[1,2,5,6,7,8]
+zerosboxes=[1,7,8]
+
 inverse_inpxor=listPermuatate(IPINV,inputxor)
 def inputPairs():
 	for i in range(1000):
@@ -212,8 +222,52 @@ def inputPairs():
 # a= get64bits()
 # print a[:32]
 # print expansion(a[:32])
-inputPairs()
+# inputPairs()
 # if(xorbitlists(strtobits('qsssmfqirrnpinrr'),strtobits('qsssufpirrnpmnrr'))==inverse_inpxor):
 # 	print "asdfghjkl"
+def findkey():
+	counts = {
+		1: 20,
+		2: 27,
+		4: 46,
+		5: 34,
+		6: 20,
+		7: 37,
+		8: 5,
+		}
 
+	key = [ 'X' for _ in range(56) ]
 
+	for (k, v) in counts.items():
+		for i, bit in enumerate('{0:06b}'.format(v)):
+			key[Keymap[(k-1)*6+i] - 1] = bit
+	# print(''.join(key))
+	return ''.join(key)
+# def generateKeys(key_arr):
+# 	try:
+# 		indices=key_arr.index('X')
+# 	except ValueError:
+# 		# print str(key_arr)
+# 		print(''.join(key_arr))
+# 	else:
+# 		key_arr[indices]='0'
+# 		generateKeys(key_arr)
+# 		key_arr[indices]='1'
+# 		generateKeys(key_arr)
+# # key =XX1XX1XXX10X0X00XXX10XX01X1X1000001X01000100X10X0110X110
+# key =['X', 'X', '1', 'X', 'X', '1', 'X', 'X', 'X', '1', '0', 'X', '0', 'X', '0', '0', 'X', 'X', 'X', '1', '0', 'X', 'X', '0', '1', 'X', '1', 'X', '1', '0', '0', '0', '0', '0', '1', 'X', '0', '1', '0', '0', '0', '1', '0', '0', 'X', '1', '0', 'X', '0', '1', '1', '0', 'X', '1', '1', '0']
+# generateKeys(key)		
+# findkey()
+# partialkey = list(findkey())
+# replaceLocations = []
+# for i in range(len(partialkey)):
+# 	if partialkey[i]=='X':
+# 		replaceLocations.append(i)
+
+# boom = [ ['0', '1'] for _ in range(14) ]
+# for replacement in itertools.product(*boom):
+# 	kk = partialkey[:]
+# 	for i in range(14):
+# 		kk[replaceLocations[i]] = replacement[i]
+# 	bitstring = ''.join(map(lambda x: str(x), kk))
+# 	print(bitstring)
