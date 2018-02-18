@@ -29,7 +29,7 @@ for i in out4:
 # print out1[2]
 
 # print out2[2]
-for x in [8]:
-	for y in out1[x]:
-		if y in out3[x]:
-			print x, int(y,2), out1[x][y], out3[x][y]
+# for x in [8]:
+# 	for y in out1[x]:
+# 		if y in out3[x]:
+# 			print x, int(y,2), out1[x][y], out3[x][y]

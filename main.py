@@ -1,6 +1,9 @@
 from utils import *
+import operator
+# For Generating input pairs for the xor value chosen 
+# inputPairs()
 counter={}
-f = open("input_output_pairs_xor4_1000.txt")
+f = open("input_output_pairs_1000.txt")
 j=0
 while True:
 	j+=1;
@@ -41,10 +44,13 @@ while True:
 				else:
 					counter[i][k]+=1
 
-	print j
+	# print j
 
 f.close()
-print counter
+for i in counter:
+	print i,int(max(counter[i].iteritems(), key=operator.itemgetter(1))[0],2)
+
+# keysgenerator()
 
 
 
