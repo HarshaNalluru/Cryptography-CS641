@@ -237,15 +237,24 @@ INT INV_P[] = {
 	5, 27, 15, 21,
 };
 
+INT INV_RFP[] = {57, 49, 41, 33, 25, 17, 9,  1,  59, 51, 43, 35, 27,
+  19, 11, 3,  61, 53, 45, 37, 29, 21, 13, 5,  63, 55,
+  47, 39, 31, 23, 15, 7,  58, 50, 42, 34, 26, 18, 10,
+  2,  60, 52, 44, 36, 28, 20, 12, 4,  62, 54, 46, 38,
+  30, 22, 14, 6,  64, 56, 48, 40, 32, 24, 16, 8};
 
+INT INV_IP[] = {40, 8,  48, 16, 56, 24, 64, 32, 39, 7,  47, 15, 55,
+  23, 63, 31, 38, 6,  46, 14, 54, 22, 62, 30, 37, 5,
+  45, 13, 53, 21, 61, 29, 36, 4,  44, 12, 52, 20, 60,
+  28, 35, 3,  43, 11, 51, 19, 59, 27, 34, 2,  42, 10,
+  50, 18, 58, 26, 33, 1,  41, 9,  49, 17, 57, 25};
 
-
-
-void des(in,out,r,flag)
+void des(in,out,r,flag,sw1)
      BYTE *in;              /* packed 64 bit Input block */
      BYTE *out;             /* packed 64 bit output block */
      INT r;                                  /* number of rounds */
 	 char flag;
+   INT sw1;           // 0 for encryption and 1 for decryption
 {
   register INT i, j, k, t;
   static BYTE block[64]; /* unpacked 64-bit input/output block */
@@ -262,12 +271,20 @@ void des(in,out,r,flag)
   /* Permute unpacked input block with IP to generate L and R */
   /*
     printf("\nThe block after the initial permutation IP \n");
-  */
-       for (j =0; j<64 ; j++)
-        {
+  */   if(sw1==0){
+          for (j =0; j<64 ; j++){
                 LR[j] = block[IP[j] -1];
                 /*printf("%d", LR[j]);*/
         }
+      }
+      else{
+        for (j =0; j<64 ; j++)
+        {
+                LR[j] = block[INV_RFP[j] -1];
+                /*printf("%d", LR[j]);*/
+        }
+      } 
+       
 
         /* Perform r rounds */
         /*
@@ -277,13 +294,10 @@ void des(in,out,r,flag)
         for (i=0; i<r; i++) {  /**--*/
 	  /* expand R to 48 bits with E and XOR  with ith subkey */
 	  for( j=0; j<48; j++) {
-	    preS[j] = LR[E[j] +31]^KS[i][j];
-	    /*
-	      if( i==2)
-	      {
-	      printf("%d", LR[E[j]+31]);
-	      }
-	    */
+      if(sw1==0)
+	       preS[j] = LR[E[j] +31]^KS[i][j];
+      else
+          preS[j] = LR[E[j] - 1] ^ KS[i][j];
 	  }
 
 
@@ -310,20 +324,35 @@ void des(in,out,r,flag)
 	    f[k+3] = t &1;
 	    
 	  }
+    if(sw1==1){
+      for (j=0; j <32; j++) {
+      /* Copy R */
+      t = LR[j];
+      /* Permute Permute f w/ P and XOR w/ L to generate new R*/
+    if (flag == 'N')
+        LR[j] = LR[j+32]^f[P[j] -1];
+    else
+        LR[j] = LR[j+32]^f[INV_P[j] -1];
+      /*LR[j+32] = LR[j]^f[j];*/
+      /* copy original R to new L */
+      LR[j+32] =t;
+      }
+    }
+	  else{
+      for (j=0; j <32; j++) {
+      /* Copy R */
+      t = LR[j+32];
+      /* Permute Permute f w/ P and XOR w/ L to generate new R*/
+    if (flag == 'N')
+        LR[j+32] = LR[j]^f[P[j] -1];
+    else
+        LR[j+32] = LR[j]^f[INV_P[j] -1];
+      /*LR[j+32] = LR[j]^f[j];*/
+      /* copy original R to new L */
+      LR[j] =t;
+    }
+    }
 	  
-	  
-	  for (j=0; j <32; j++) {
-	    /* Copy R */
-	    t = LR[j+32];
-	    /* Permute Permute f w/ P and XOR w/ L to generate new R*/
-		if (flag == 'N')
-	    	LR[j+32] = LR[j]^f[P[j] -1];
-		else
-	    	LR[j+32] = LR[j]^f[INV_P[j] -1];
-	    /*LR[j+32] = LR[j]^f[j];*/
-	    /* copy original R to new L */
-	    LR[j] =t;
-	  }
 	  
         }
         /*
@@ -332,8 +361,13 @@ void des(in,out,r,flag)
 	  printf( "%d", LR[i]);
         */
         /* Permute L and R with reverse IP-1 to generate output block*/
-        for (j=0; j < 64; j++) block [j] = LR[RFP[j]-1];
-	
+        for (j=0; j < 64; j++) {
+          if(sw1==0)
+              block [j] = LR[RFP[j]-1];
+          else
+              block[j] = LR[INV_IP[j] - 1];
+        }
+	       
         /* Pack data into 8 bits per byte */
 	
         pack8(out, block);
@@ -357,7 +391,20 @@ void tostr(BYTE out[], FILE *fp2) {
     }
     fprintf(fp2,"\n");
 }
-
+void decrypt(char cipher[]){
+    BYTE in[100];
+    BYTE out[100];
+    tobyte(cipher, in);
+    BYTE finalkey[56] = {1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0 };
+    set_the_key(1, finalkey, 6);
+    des(in, out, 6, 'N',1);
+    int  i;
+    for (i = 0; i < 8; ++i) {
+        char temp1=(char)('f' + (out[i] / 16));
+        char temp2=(char)('f' + (out[i] % 16));
+        printf("%c%c",temp1,temp2);
+    }
+}
 int main(int argc, char **argv) {
     FILE *fp;
     FILE *fp2;
@@ -367,10 +414,16 @@ int main(int argc, char **argv) {
     ssize_t read;
     fp = fopen("keys.txt", "r");
     char plaintext[100];
-    printf("plain text:");
-    scanf("%s", plaintext);
-
-    while ((read = getline(&line,&len, fp))!=-1) {
+    int choice;
+    printf("Enter 1 for decryption and 0 for encryption:");
+    scanf("%d",&choice);
+    printf("Enter text:");
+    scanf("\n%s", plaintext);
+    
+    if(choice==1)
+      decrypt(plaintext);
+    else{
+      while ((read = getline(&line,&len, fp))!=-1) {
         // printf("asdfghjkl;\n");
         BYTE in[100];
         BYTE out[100];
@@ -383,12 +436,15 @@ int main(int argc, char **argv) {
         }
         set_the_key(0, k, 6);
 
-        des(in, out, 6, 'N');
+        des(in, out, 6, 'N',0);
         fprintf(fp2,"%s    ", line);
         tostr(out,fp2);
         printf("\n");
     }
 
     fclose(fp);
+    }
+    
+    
     return 0;
 }
