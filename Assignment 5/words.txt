@@ -1,0 +1,1 @@
+{ give, read, enter, go, climb, put, insert, pull, dive, jump, back, catch, grab, explore, pick, pluck, wave, list, exit1, exit2, exit3, exit4 }
