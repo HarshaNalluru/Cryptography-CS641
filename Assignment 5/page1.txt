@@ -1,14 +1,56 @@
-back:
-back
+pluck:
+There is nothing to pluck here!
 
-exit1:
-exit1
+exit3:
+There is no numbered exit here
 
-exit2:
-exit2
+dive:
+You dive into the floor, and hurt yourself badly
+
+exit4:
+There is no numbered exit here
+
+insert:
+You insert your hand in a small hole in the floor, but find nothing
+
+enter:
+You try to force your way through the wall, and end up exhausting yourself
+
+put:
+You insert your hand in a small hole in the floor, but find nothing
 
 pull:
-pull
+You insert and pull your hand out of a hole
+
+jump:
+You jump on the floor, making your feet sore
+
+grab:
+You try to catch something but find only air
+
+pick:
+There is nothing to pick here!
+
+give:
+There is no one to give anything to!
+
+climb:
+Unknown command climb
+
+explore:
+You explore the whole area, but find nothing interesting
+
+exit1:
+There is no numbered exit here
+
+wave:
+You wave the wand but nothing happens
+
+read:
+You try to understand the funny patterns on the walls but in vain
+
+catch:
+You try to catch something but find only air
 
 go:
 go
