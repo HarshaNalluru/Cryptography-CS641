@@ -8,11 +8,11 @@ time.sleep(3)
 
 print(pyautogui.position())
 
-list_of_words = {"read", "enter", "climb", "insert", "pull", "dive", "jump", "grab", "explore", "pick", "wave", "exit1",  "exit3", "exit4" }
+# list_of_words = {"give", "pluck", "exit2", "catch", "put", "go","read", "enter", "climb", "insert", "pull", "dive", "jump", "grab", "explore", "pick", "wave", "exit1",  "exit3", "exit4" }
 
-magic_words = {"back"}
-dead_words = {"give", "pluck", "exit2", "catch", "put", "go"}
+# magic_words = {"back"}
 
+list_of_words = {"exit1","exit2","exit3","exit4"}
 f2 = open('page2_after_go.txt','w+')
 
 
