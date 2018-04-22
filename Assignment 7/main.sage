@@ -196,12 +196,8 @@ for k_bits in range(300):
     f.write("root = "+str(roots)+"\n\n")
     f.close()
     if roots:
-        rev_pass = ''
         password = Integer(roots[0]).binary()
         print password
-        for set_8 in range(len(password)):
-            rev_pass += password[len(password)-1-set_8]
-        print rev_pass
-        rev_pass = "0"*3+rev_pass
-        print bin_to_ascii(rev_pass)
+        password = "0"*3+password
+        print bin_to_ascii(password)
         break
