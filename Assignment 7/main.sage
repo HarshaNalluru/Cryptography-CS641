@@ -196,23 +196,19 @@ for k_bits in range(300):
     print roots
     f.write("root = "+str(roots)+"\n\n")
     f.close()
-# # print len(roots[0])
-# a = roots[0].digits(2)
-# print a
-# c = bin_to_ascii(a)
-# print c
-rev_pass = ''
-password = '000011010100001001001000010110100100101001000010010011011101101011001010110000101100000010001011'
-for set_8 in range(len(password)):
-    rev_pass += password[len(password)-1-set_8]
-print rev_pass
+    if roots:
+        rev_pass = ''
+        password = roots[0]
+        for set_8 in range(len(password)):
+            rev_pass += password[len(password)-1-set_8]
+        print rev_pass
+        rev_pass = "0"*3+password
+        print bin_to_ascii(rev_pass)
+        
+
 # 000110100010000001101000011010100110101101110110010010000100101001001011010000100100100001010110
 # 8085788970795186269987162198
 
-# 011010100001001001000010110100100101001000010010011011101101011001010110000101100000010001011
-# 000011010100001001001000010110100100101001000010010011011101101011001010110000101100000010001011
-# \rBHZJBM\xda\xca\xc2\xc0\x8b
-# BHZJBMdacac2c08b
 # print len(c)
 # ############################################
 # # Test on Stereotyped Messages
