@@ -42,10 +42,8 @@ def coppersmith_howgrave_univariate(pol, modulus, beta, mm, tt, XX):
     #
     """
     * we want to find g(x) such that ||g(xX)|| <= b^m / sqrt(n)
-
     * we know LLL will give us a short vector v such that:
     ||v|| <= 2^((n - 1)/4) * det(L)^(1/n)
-
     * we will use that vector as a coefficient vector for our g(x)
     
     * so we want to satisfy:
@@ -122,7 +120,7 @@ def coppersmith_howgrave_univariate(pol, modulus, beta, mm, tt, XX):
 
     # factor polynomial
     potential_roots = new_pol.roots()
-    print "potential roots:", potential_roots
+    # print "potential roots:", potential_roots
 
     # test roots
     roots = []
@@ -148,7 +146,7 @@ if z == n:
     print "Hahahaa"
 # Integer(str(ascii_to_bin(" cltFykfgTnlY")), base=2)
 # message with X:s replaced with \x00
-passage_message = "Descrifardo: This door has RSA encryption with exponent 5 and the password is"
+passage_message = "Descrifardo: This door has RSA encryption with exponent 5 and the password is "
 passage_message_bin = ascii_to_bin(passage_message)
 passage_message_bin_len = len(passage_message_bin)
 # print passage_message_bin_len
@@ -164,8 +162,9 @@ passage_message_bin_len = len(passage_message_bin)
 
     
 for k_bits in range(300):
+    print k_bits
     m2 = Integer(str(passage_message_bin) + "0"*k_bits, base=2)
-    print m2
+    # print m2
     f = file('output_roots_right.txt','a')
     f.write("m2 = "+str(m2)+"\n")
     c = 55127372485143185118477977875759360987939105298255623273291078476647124390200192168191805431399040264511285732135425834978033390160442898674372536810749500925899530559795236959138511319349966727845983354658163974982655683337730491153237831768713782444074338443975225788850945480558591673592805096460218140605
@@ -193,109 +192,16 @@ for k_bits in range(300):
 
     roots = coppersmith_howgrave_univariate(pol, N, beta, mm, tt, XX)
     # print hex(roots[0]).strip("0x").strip("L").decode("hex")
-    print roots
+    # print roots
     f.write("root = "+str(roots)+"\n\n")
     f.close()
     if roots:
         rev_pass = ''
-        password = roots[0]
+        password = Integer(roots[0]).binary()
+        print password
         for set_8 in range(len(password)):
             rev_pass += password[len(password)-1-set_8]
         print rev_pass
-        rev_pass = "0"*3+password
+        rev_pass = "0"*3+rev_pass
         print bin_to_ascii(rev_pass)
-        
-
-# 000110100010000001101000011010100110101101110110010010000100101001001011010000100100100001010110
-# 8085788970795186269987162198
-
-# print len(c)
-# ############################################
-# # Test on Stereotyped Messages
-# ##########################################    
-
-# print "//////////////////////////////////"
-# print "// TEST 1"
-# print "////////////////////////////////"
-
-# # RSA gen options (for the demo)
-# length_N = 1024  # size of the modulus
-# Kbits = 200      # size of the root
-# e = 3
-
-# # RSA gen (for the demo)
-# p = next_prime(2^int(round(length_N/2)))
-# q = next_prime(p)
-# N = p*q
-# ZmodN = Zmod(N);
-
-# # Create problem (for the demo)
-# K = ZZ.random_element(0, 2^Kbits)
-# Kdigits = K.digits(2)
-# M = [0]*Kbits + [1]*(length_N-Kbits); 
-# for i in range(len(Kdigits)):
-#     M[i] = Kdigits[i]
-# M = ZZ(M, 2)
-# C = ZmodN(M)^e
-
-# # Problem to equation (default)
-# P.<x> = PolynomialRing(ZmodN) #, implementation='NTL')
-# pol = (2^length_N - 2^Kbits + x)^e - C
-# dd = pol.degree()
-
-# # Tweak those
-# beta = 1                                # b = N
-# epsilon = beta / 7                      # <= beta / 7
-# mm = ceil(beta**2 / (dd * epsilon))     # optimized value
-# tt = floor(dd * mm * ((1/beta) - 1))    # optimized value
-# XX = ceil(N**((beta**2/dd) - epsilon))  # optimized value
-
-# # Coppersmith
-# start_time = time.time()
-# roots = coppersmith_howgrave_univariate(pol, N, beta, mm, tt, XX)
-
-# # output
-# print "\n# Solutions"
-# print "we want to find:",str(K)
-# print "we found:", str(roots)
-# print("in: %s seconds " % (time.time() - start_time))
-# print "\n"
-
-# ############################################
-# # Test on Factoring with High Bits Known
-# ##########################################
-# print "//////////////////////////////////"
-# print "// TEST 2"
-# print "////////////////////////////////"
-
-# # RSA gen
-# length_N = 1024;
-# p = next_prime(2^int(round(length_N/2)));
-# q = next_prime( round(pi.n()*p) );
-# N = p*q;
-
-# # qbar is q + [hidden_size_random]
-# hidden = 200;
-# diff = ZZ.random_element(0, 2^hidden-1)
-# qbar = q + diff; 
-
-# F.<x> = PolynomialRing(Zmod(N), implementation='NTL'); 
-# pol = x - qbar
-# dd = pol.degree()
-
-# # PLAY WITH THOSE:
-# beta = 0.5                             # we should have q >= N^beta
-# epsilon = beta / 7                     # <= beta/7
-# mm = ceil(beta**2 / (dd * epsilon))    # optimized
-# tt = floor(dd * mm * ((1/beta) - 1))   # optimized
-# XX = ceil(N**((beta**2/dd) - epsilon)) # we should have |diff| < X
-
-# # Coppersmith
-# start_time = time.time()
-# roots = coppersmith_howgrave_univariate(pol, N, beta, mm, tt, XX)
-
-# # output
-# print "\n# Solutions"
-# print "we want to find:", qbar - q
-# print "we found:", roots
-# print("in: %s seconds " % (time.time() - start_time))
+        break
