@@ -196,8 +196,9 @@ for k_bits in range(300):
     f.write("root = "+str(roots)+"\n\n")
     f.close()
     if roots:
+        print "password in int:\t", roots[0]
         password = Integer(roots[0]).binary()
-        print password
+        print "password in binary:\t", password
         password = "0"*3+password
-        print bin_to_ascii(password)
+        print "password in ascii:\t", bin_to_ascii(password)
         break
